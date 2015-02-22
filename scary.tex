@@ -1,0 +1,183 @@
+\documentclass[notheorems]{beamer}%[handout]
+
+\mode<presentation>
+{
+%  \useinnertheme[shadow]{rounded}
+  \useinnertheme{rounded}
+  \usecolortheme{rose,seahorse}
+%  \usecolortheme{albatross}
+  \setbeamercovered{transparent}
+%  \usefonttheme[stillsansserifsmall,stillsansseriflarge]{serif}
+  \usefonttheme{serif}
+}
+
+%\setbeameroption{show only notes}
+
+%\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{question}[theorem]{Question}
+%\theoremstyle{proof}
+%\theoremstyle{example}
+%\newtheorem{sketch}[theorem]{Sketch}
+
+\DeclareMathOperator{\loglog}{loglog}
+
+\newcommand{\nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\rat}{\ensuremath{\mathbb{Q}}}
+\newcommand{\reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\ints}{\ensuremath{\mathbb{Z}}}
+\newcommand{\complex}{\ensuremath{\mathbb{C}}}
+
+
+\title%[Domain representations of topological algebras]
+{Scary Lecture}
+
+\author%[Author, Another]
+{Jens Blanck}
+
+\institute% (optional, but mostly needed)
+{%
+%\pgfuseimage{university-logo}\\
+%Swansea University
+   Swansea University
+}
+
+\date%[Short Occasion]
+{}
+
+\subject{Talks}
+
+%\pgfdeclareimage[height=0.5cm]{university-logo}{../public_html/cslogo}
+% \pgfdeclareimage[height=1cm]{wimcs-logo}{WIMCS_Logo}
+% \logo{\pgfuseimage{wimcs-logo}}
+
+%\pgfdeclareimage[height=4cm]{turing}{Turing}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \includegraphics[height=3cm]{spok.jpg}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Thread-Safe}
+  Thread safety is about \alert{data}, not \emph{threads}.
+
+  Loosely defined as `no less ``correct'' in multi-threaded setting'.
+
+  Methods of insuring it breaks down into:
+  \begin{itemize}
+  \item \alert{Don't share} state variables.
+  \item Make shared state \alert{immutable}.
+  \item Use \alert{synchronisation} to access shared state.
+  \end{itemize}
+
+  Object orientation helps here since it can be used to encapsulate
+  state. 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{itemize}
+  \item Consider program that needs a \emph{long} time to run.
+  \item How about adding periodic snapshots to allow restarting computation in
+    case of failures.
+  \begin{center}
+    \includegraphics[height=4cm]{images.jpg}
+  \end{center}
+  \item Now, we need to synchronise all saved state variables.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Race Conditions}
+  When the \emph{correctness} of a program depends on the timing/interleaving
+  of operations (or interference).
+
+  \begin{itemize}
+  \item We strive for \alert{atomicity}---at any observable point in time,
+    either all or none of the operation has executed.
+  \item Beware of \alert{compound actions}
+    \begin{itemize}
+      \item check-then-act, and
+      \item read-modify-write.
+    \end{itemize}
+  \end{itemize}
+  \hfill\includegraphics[height=3cm]{spok2.jpg}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reordering}
+  The JVM (Java Virtual Machine) is allowed to \alert{reorder} instructions.
+  \includegraphics[height=3cm]{spok.jpg}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{What could be printed?}
+\tiny
+\begin{verbatim}
+public class PossibleReordering {
+    static int x = 0, y = 0;
+    static int a = 0, b = 0;
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread one = new Thread(new Runnable() {
+            public void run() {
+                a = 1;
+                x = b;
+            }
+        });
+        Thread other = new Thread(new Runnable() {
+            public void run() {
+                b = 1;
+                y = a;
+            }
+        });
+        one.start(); other.start();
+        one.join(); other.join();
+        System.out.println("( " + x + "," + y + ")");
+    }
+}
+\end{verbatim}
+\normalsize
+\end{frame}
+
+\begin{frame}
+  \frametitle{Happens-Before}
+  \begin{itemize}
+  \item Program order rule. (Within thread)
+  \item Monitor lock rule.
+  \item Volatile variable rule.
+  \item Thread start rule.
+  \item Thread termination rule.
+  \item Interruption rule.
+  \item Finalizer rule.
+  \item Transitivity.
+  \end{itemize}
+  \hfill\includegraphics[height=3cm]{ghostbusters.jpg}
+\end{frame}
+
+\begin{frame}
+  \hfill\includegraphics[height=4cm]{spok2.jpg}\hfill\null
+\end{frame}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

@@ -1,0 +1,105 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{pgflibraryshapes}
+
+\usepackage{palatino}
+\usepackage{amsfonts}
+\usepackage{fancyvrb}
+\usepackage{url}
+
+% To show source
+\DefineVerbatimEnvironment{source}{Verbatim}%
+{commandchars=\\\{\}}
+
+\DefineVerbatimEnvironment{sourcex}{Verbatim}%
+{fontsize=\footnotesize,commandchars=\\\{\}}
+
+% Common sets
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+
+\title{CS-210\\Concurrency}
+\author{Jens Blanck}
+
+\date{2 January 2015}
+
+\mode<presentation>
+{
+  \useinnertheme[shadow]{rounded}
+  \usecolortheme{seahorse,rose}
+%  \usetheme{Boadilla}
+  \setbeamercovered{transparent}
+  \usefonttheme[stillsansserifsmall,stillsansseriflarge]{serif}
+}
+
+\newtheorem{question}[theorem]{Question}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\mode<presentation>
+% \usetheme{Goettingen}
+\usecolortheme{rose}
+\usefonttheme{serif}
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Teaching}
+  \begin{itemize}
+  \item 3 lectures per week (including problem solving, and preparation and
+    feedback of labs and coursework).
+  \item 1 lab per week (split in three groups). \alert{Start in week 2.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Assessment}
+  \begin{itemize}
+  \item Exam 70\%
+  \item Coursework 20\% (probably in 2 assignments)
+  \item Labs 10\%
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Course Information}
+  \begin{center}
+    \Huge Blackboard
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How to pass}
+  \begin{tikzpicture}
+    \path (0,2) node(a) [ellipse,draw] {\Large Attend}
+          (3,1) node(e) [ellipse,draw] {\Large Engage}
+          (7,0) node(u) [ellipse,draw] {\Large Understand};
+    \draw [thick,->] (node cs:name=a) -- (node cs:name=e);
+    \draw [thick,->] (node cs:name=e) -- (node cs:name=u);
+  \end{tikzpicture}
+  \begin{itemize}
+  \item Attend 
+  \item Engage:
+    \begin{itemize}
+    \item listen
+    \item take notes
+    \item do labs
+    \item submit coursework
+    \item \(\vdots\)
+    \item Ask questions -- during lectures, outside lectures
+    \end{itemize}
+  \item Some of the Exam will test your Understanding
+  \end{itemize}
+\end{frame}
+
+\end{document}

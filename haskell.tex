@@ -1,0 +1,124 @@
+\documentclass[notheorems]{beamer}%[handout]
+
+\mode<presentation>
+{
+  \useinnertheme{rounded}
+  \usecolortheme{rose,seahorse}
+  \setbeamercovered{transparent}
+  \usefonttheme{serif}
+}
+
+%\setbeameroption{show only notes}
+
+%\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+\usepackage{fancyvrb}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{question}[theorem]{Question}
+%\theoremstyle{proof}
+%\theoremstyle{example}
+%\newtheorem{sketch}[theorem]{Sketch}
+
+\DeclareMathOperator{\loglog}{loglog}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+
+
+\title%[Domain representations of topological algebras]
+{Concurrency in Haskell}
+
+\author%[Author, Another]
+{Jens Blanck}
+
+\institute% (optional, but mostly needed)
+{%
+   Swansea University
+}
+
+\date%[Short Occasion]
+{}
+
+\subject{CS-210 Concurrency}
+
+%\pgfdeclareimage[height=4cm]{turing}{Turing}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Concurrency in Haskell}
+  \begin{itemize}
+  \item Like in Java, Haskell has \alert{threads}.
+  \item We can also (as in Java) create Operating system processes.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Concurrency and Parallelism}
+  For the purpose of this discussion we define:
+  \begin{itemize}
+  \item Parallelism is about making things run faster.
+  \item Concurrency is a program-structuring technique that allows multiple
+    threads of control to execute simultaneously.
+  \end{itemize}
+  It is often claimed that parallelism implies concurrency. However, this is
+  not necessarily true in a language like Haskell with referential transparency.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The Notion of Threads}
+  \begin{itemize}
+  \item A thread is something that can run code.
+  \item As Java is object oriented we expect a thread to be an \alert{object}.
+  \item Indeed, it is. (It is an object that implements the \verb-Runnable-
+    interface.)
+  \item But Haskell is a \alert{purely} functional language.
+  \item Threads would like to interact with IO, so a thread in
+    Haskell needs to have an IO type, just like main.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Creating a thread in Haskell}
+  \begin{itemize}
+  \item Threads in Haskell are created by the \verb-forkIO- function.
+  \item \verb+forkIO :: IO () -> IO ThreadId+
+  \item The \verb-ThreadId- gives the parent thread a handle to the
+    child thread.
+  \end{itemize}
+  \begin{example}
+\begin{verbatim}
+main = do
+  -- Child thread
+  forkIO $ putStrLn "Hello world"
+  -- Parent/main thread
+  putStrLn "Goodbye cruel world"
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
