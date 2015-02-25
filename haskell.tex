@@ -153,6 +153,16 @@ main = do
   \end{enumerate}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{MVar operations}
+  \begin{itemize}
+  \item \verb=newEmptyMVar :: IO (MVar a)=
+  \item \verb=newMVar :: a -> IO (MVar a)=
+  \item \verb=takeMVar :: MVar a -> IO a=
+  \item \verb=putMVar :: MVar a -> a -> IO ()=
+  \end{itemize}
+\end{frame}
+
 \begin{frame}
   \frametitle{MVar v Monitors}
   \begin{description}
