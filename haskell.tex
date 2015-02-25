@@ -116,6 +116,92 @@ main = do
   \end{example}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Communication in Haskell}
+  \begin{itemize}
+  \item Haskell is a purely functional language, which means that it does not
+    have \alert{side effects}.
+  \item Communicating values correspond to a change of state. Any state change
+    is a side effect.
+  \item So communication needs to be wrapped into something that can handle
+    state changes.
+  \item Examples of wrappings relevant for concurrency include \verb-IO- and
+    \verb-STM- (Software Transactional Memory).
+  \item Both \verb-IO- and \verb-STM- are monads, allowing us to use
+    \verb-do--notation.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{MVar}
+  An \verb-MVar t- is mutable location that is either empty or contains a
+  value of type \verb-t-. It has two fundamental operations:
+  \begin{itemize}
+  \item \verb-putMVar- which fills an \verb-MVar- if it is empty and
+    blocks otherwise, and
+  \item \verb-takeMVar- which empties an \verb-MVar- if it is full and
+    blocks otherwise.
+  \end{itemize}
+
+  They can be used in multiple different ways:
+  \begin{enumerate}
+  \item As synchronized \alert{mutable variables},
+  \item As \alert{channels}, with \verb-takeMVar- and \verb-putMVar- as
+    receive and send, and
+  \item As a \alert{binary semaphore} \verb-MVar ()-, with \verb-takeMVar- and
+    \verb-putMVar- as \verb-wait- (\verb-down-) and \verb-signal- (\verb-up-).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MVar v Monitors}
+  \begin{description}
+  \item[Encapsulated data:] Yes. You take the whole chunk of data as one
+    unit. Individual pieces cannot be accessed by different threads.
+  \item[Access methods:] No. You get the whole chunk, it's your responsibility
+    to unpack and repack the data.
+  \item[Mutual exclusive access:] Yes. When you take the data out of the MVar
+    it is yours until you put it back.
+  \item[Condition synchronisation:] Sort of. If you notice that you can't
+    proceed, you have to put the data back in the MVar.
+  \end{description}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{First MVar Example}
+\begin{verbatim}
+import Control.Concurrent
+
+main :: IO ()
+main = do
+  t <- newEmptyMVar
+  forkIO $ putMVar t "World"
+  putStr "Hello "
+  s <- takeMVar t
+  putStrLn s
+\end{verbatim}
+  The MVar acts as \alert{synchronisation} as well as
+  \alert{communication}.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Second MVar Example}
+\begin{verbatim}
+import Control.Concurrent
+
+main :: IO ()
+main = do
+  t <- newEmptyMVar
+  forkIO $ do
+    putMVar t "Hello "
+    putMVar t "World!"
+  s <- takeMVar t
+  putStr s
+  s <- takeMVar t
+  putStrLn s
+\end{verbatim}
+\end{frame}
+
 \end{document}
 
 %%% Local Variables: 
