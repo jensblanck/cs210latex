@@ -117,6 +117,31 @@ main = do
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Reminders}
+\begin{verbatim}
+import Control.Concurrent
+import Text.Printf
+
+main :: IO ()
+main = loop
+  where
+    loop = do
+      s <- getLine
+      if s == "exit"
+        then return ()
+        else do forkIO $ setReminder s
+                loop
+
+setReminder :: String -> IO ()
+setReminder s = do
+  let t = read s :: Int
+  printf "Reminder set for %d s.\n" t
+  threadDelay (10^6 * t)
+  printf "%d s is up.\n" t
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{Communication in Haskell}
   \begin{itemize}
   \item Haskell is a purely functional language, which means that it does not
@@ -173,7 +198,7 @@ main = do
   \item[Mutual exclusive access:] Yes. When you take the data out of the MVar
     it is yours until you put it back.
   \item[Condition synchronisation:] Sort of. If you notice that you can't
-    proceed, you have to put the data back in the MVar.
+    proceed, you have to put the original data back in the MVar.
   \end{description}
 \end{frame}
 
