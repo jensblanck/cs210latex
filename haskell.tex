@@ -237,6 +237,50 @@ main = do
 \end{verbatim}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Concurrent and Parallel Haskell Ecosystem }
+  \begin{itemize}
+  \item Concurrent
+    \begin{itemize}
+    \item Lightweight threads
+    \item MVars
+    \item Software Transactional Memory (STM)
+    \item Asynchronous exceptions
+    \end{itemize}
+  \item Parallel
+    \begin{itemize}
+    \item Eval monad
+    \item Strategies
+    \item Par monad
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parallel Haskell}
+  We have had a peak at Concurrent Haskell with it's lightweight threads (much
+  like Java) and MVars (akin to monitors). There are interesting and promising
+  aspects of Concurrent Haskell that we will not touch upon (STM).\\[2ex]
+  We will now look quickly at Parallel Haskell. In particular, at the Eval
+  monad and strategies.\\[2ex]
+  In most languages all parallelism has to be implemented via
+  concurrency. In Haskell this is no longer true due to referential
+  transparency and deterministic results.
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Parallelism vs Concurrency}
+%   Primary distinguishing feature of Parallel Haskell: \alert{determinism}
+
+%   \begin{itemize}
+%   \item The program does “the same thing” regardless of how many cores are
+%     used to run it.
+%   \item No race conditions or deadlocks.
+%   \item Add parallelism without sacrificing correctness.
+%   \item Parallelism is used to speed up pure (non-IO monad) Haskell code.
+%   \end{itemize}
+% \end{frame}
+
 \end{document}
 
 %%% Local Variables: 
